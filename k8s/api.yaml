@@ -19,8 +19,11 @@ spec:
         - name: web-api
           image: jdvincent/pytorch-web-api:latest
           env:
-            - name: MONGO_PASSWORD
-              value: 
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-password
+                  key: MONGODB_PASSWORD
           ports:
             - name: web-api
               containerPort: 8000

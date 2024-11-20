@@ -17,7 +17,11 @@ spec:
     spec:
       containers:
         - name: worker
-          image: jdvincent/pytorch-web-api:latest
+          image: 
+          imagePullPolicy: Never
           env:
-            - name: MONGO_PASSWORD
-              value: 
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-password
+                  key: MONGODB_PASSWORD

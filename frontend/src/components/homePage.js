@@ -6,7 +6,7 @@ const Posts = () => {
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/posts')
+        fetch('http://api/v1/posts')
            .then(response => response.json())
            .then(data => setPosts(data))
            .catch(error => console.error('Error:', error));
