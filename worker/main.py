@@ -2,7 +2,6 @@ import json
 from redis import Redis
 from db import metrics_collection
 
-
 redis = Redis(host='redis', port=6379, db=0)
 
 def update_post_metrics():
@@ -17,12 +16,13 @@ def update_post_metrics():
                     metrics_data[key] = metrics_data.get(key, 0) + value
             print(data)
             try:
-                metrics_collection.update_one(
-                    {"name": data["name"]}, {"$set": metrics_data}, upsert=True)
+                filter_query = {"name": data["name"]}
+                update_query = {"$push": {"views": metrics_data}}
+                metrics_collection.update_one(filter_query, update_query)
             except Exception as e:
                 print(f"Post record not found, attempting to create")
                 try:
-                    metrics_collection.insert_one(data)
+                    metrics_collection.insert_one({"name": data["name"], "views": metrics_data})
                 except Exception as e:
                     print(f"Error inserting post metrics: {e}")
 
