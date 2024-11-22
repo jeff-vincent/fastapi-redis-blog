@@ -3,12 +3,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: app
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: 500m
 spec:
-  ingressClassName: nginx
+  ingressClassName: kong
   rules:
-    - host: localhost
+    - host: null
       http:
         paths:
           - pathType: Prefix

@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: worker
-          image: 
+          image: worker
           imagePullPolicy: Never
           env:
             - name: MONGODB_PASSWORD

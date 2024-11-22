@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
         - name: web-api
-          image: jdvincent/pytorch-web-api:latest
+          image: api
+          imagePullPolicy: Never
           env:
             - name: MONGODB_PASSWORD
               valueFrom:
