@@ -18,16 +18,14 @@ def process_metrics(data):
             if k == 'time':
                 timestamp = v
                 page_view['timestamp'] = timestamp
-            if k == 'path_params':
-                id = v['id']
-                post_info = _get_post_info(id)
-                page_view['author'] = post_info['author']
-                page_view['title'] = post_info['title']
+            if k == 'author':
+                author = v
+                page_view['author'] = author
+            if k == 'title':
+                title = v
+                page_view['title'] = title
         result.append(page_view)
 
     return result
 
-def _get_post_info(id):
-    post = posts_collection.find_one({"id": int(id)})
-    data = json.loads(json_util.dumps(post))
-    return data
+

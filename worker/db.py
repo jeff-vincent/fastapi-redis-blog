@@ -8,7 +8,8 @@ def init_db():
     client = pymongo.MongoClient(f"mongodb+srv://jeffdvincent:{MONGO_PASSWORD}@cluster0.8xe9o.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
     db = client.admin_database
     metrics_collection = db.metrics
+    posts_collection = db.posts
     
-    return metrics_collection
+    return metrics_collection, posts_collection
 
-metrics_collection = init_db()
+metrics_collection, posts_collection = init_db()
