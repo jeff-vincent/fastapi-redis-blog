@@ -2,17 +2,17 @@ import json
 from fastapi import FastAPI, Request, BackgroundTasks
 from redis import Redis
 from db import posts_collection, metrics_collection
+from utils import process_metrics
 from bson import json_util
 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 
 origins = [
-
     "http://localhost",
+    "http://localhost:3000/",
     "http://localhost:3000",
     "http://localhost:3000/create",
-    "http://localhost:8080",
 ]
 
 app = FastAPI()
@@ -20,7 +20,7 @@ app = FastAPI()
 # Add CORS middleware to the application
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -38,6 +38,7 @@ async def create_post(request: Request):
 def get_all_posts():
     posts = posts_collection.find({})
     result = json.loads(json_util.dumps(list(posts)))
+    print(result)
     return result
 
 @app.get('/api/v1/post/{id}')
@@ -51,7 +52,6 @@ def get_post_by_id(request: Request, id: int, backgroundtasks: BackgroundTasks):
         response['title'] = r.get('title')
         response['body'] = r.get('body')
         response['author'] = r.get('author')
-        print(response)
         return response
     else:
         return {"error": "Post not found"}
@@ -68,10 +68,20 @@ async def _update_post_metrics(request: Request):
 @app.get('/api/v1/metrics/{id}')
 async def get_post_metrics(id: str):
     data = metrics_collection.find({"path_params.id": id})
-    result = json.loads(json_util.dumps(list(data)))
-    print(result)
     if data:
-        return result
+        processed_data = process_metrics(data)
+        print(processed_data)
+        return processed_data
+    else:
+        return {"error": "No metrics found"}
+    
+@app.get('/api/v1/metrics')
+async def get_post_metrics():
+    data = metrics_collection.find({})
+    if data:
+        processed_data = process_metrics(data)
+        print(processed_data)
+        return processed_data
     else:
         return {"error": "No metrics found"}
 

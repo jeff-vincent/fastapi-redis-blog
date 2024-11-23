@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Posts from './components/posts';
 import Post from './components/post';
 import Editor from './components/textEditor';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './components/protectedRoute';
+import MetricsDashboard from './components/metricsDashboard';
 
 const App = () => {
   // Simple authentication state, replace this with real authentication
@@ -30,6 +31,15 @@ const App = () => {
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated}>
                 <Editor />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            exact 
+            path="/metrics" 
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <MetricsDashboard />
               </ProtectedRoute>
             } 
           />

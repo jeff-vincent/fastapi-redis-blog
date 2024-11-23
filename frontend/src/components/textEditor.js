@@ -7,6 +7,7 @@ const Editor = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [summary, setSummary] = useState('');
+  const [redirectURL, setRedirectURL] = useState(null);
 
   const handleChange = (value) => {
     setEditorContent(value);
@@ -22,6 +23,10 @@ const Editor = () => {
 
   const handleSummaryChange = (event) => {
     setSummary(event.target.value);
+  };
+
+  const handleRedirectURLChange = (event) => {
+    setRedirectURL(event.target.value);
   };
 
   const generateId = () => {
@@ -40,6 +45,7 @@ const Editor = () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       published: true,
+      redirect_url: redirectURL, // If the user chooses to redirect to another URL, add it here
     };
 
     // Send the editor content to the backend API as JSON
@@ -106,6 +112,16 @@ const Editor = () => {
               onChange={handleSummaryChange}
               placeholder="Enter a brief summary"
               required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </label>
+          <label className="block">
+            <span className="text-gray-700 font-semibold">Redirect URL (optional):</span>
+            <input 
+              type="text" 
+              value={redirectURL}
+              onChange={handleRedirectURLChange}
+              placeholder="Enter an optional redirect URL"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
           </label>
